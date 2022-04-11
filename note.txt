@@ -1,0 +1,47 @@
+models.py 
+1) import AbstractUser
+
+class User(AbstractUser)
+ya aba baaki k k thpanan mann cxa tei thapni
+username = None
+email= (unique=True)
+mobile = 
+forgetpassord =
+lastlogintime = 
+lastlogouttime =
+is_verified = BooleanField
+
+aba email bata login garos username bata haina djnago le defualt unsername le login garxa but we dont want that
+tesko lagi mathi tei gareko
+
+USERNAME_FIELD = 'email'
+
+aba apps ma manger.py banauni
+from django.contrib.auth.base_user import BaseUserManager
+
+class UserManager(BaseUserManager):
+ user_in_migrations = True  eslai migrations ko time ma use gar vaneko
+
+def create_user(self,email,password=None, **extra_fields):
+if not email:
+raise Valuerror('Email is required')
+
+email = self.normalize_email(email) [email najudos vanera]
+user = self.mode(email = email, **extra_fields)
+user.save(using=self._db)
+return user
+
+def create_superuser(self,email,password, **extra_feilds):
+extra_fields , setdeafult('is_staff', True)
+extra_fields , setdeafult('is_superuser', True)
+extra_fields , setdeafult('is_active', True)
+ if extra_feilds.get('is_staff') is not True:
+   raise ValueError(_('Super user must have is_staff true'))
+ return self.create_user(email,password,**extra_fields)
+
+settings ma jun thau ma vaye pani AUTH_USER_MODEL = 'accounts.User'
+aba models.py ma from .manager import UserManager 
+
+tespaxi User class ma objects = UserManager() username_field vanda mathi
+tespaxi models ko ma username_field vanda muni REQUIRED_FIELDS = [] ani migrate
+
